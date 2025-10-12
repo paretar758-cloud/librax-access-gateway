@@ -2,8 +2,15 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Index from "./pages/Index";
+import Auth from "./pages/Auth";
+import Dashboard from "./pages/Dashboard";
+import Search from "./pages/Search";
+import MapView from "./pages/MapView";
+import Roadmap from "./pages/Roadmap";
+import Requests from "./pages/Requests";
+import BorrowHistory from "./pages/BorrowHistory";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -16,7 +23,13 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          <Route path="/auth" element={<Auth />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/search" element={<Search />} />
+          <Route path="/map" element={<MapView />} />
+          <Route path="/roadmap" element={<Roadmap />} />
+          <Route path="/requests" element={<Requests />} />
+          <Route path="/borrow-history" element={<BorrowHistory />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
