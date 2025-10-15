@@ -1,4 +1,3 @@
-import { Badge } from "@/components/ui/badge";
 import { Book } from "@/data/booksData";
 
 interface BookCardProps {
@@ -11,57 +10,54 @@ const BookCard = ({ book }: BookCardProps) => {
   const getLevelColor = (level: string) => {
     switch (level) {
       case "Beginner":
-        return "bg-green-500 text-white";
+        return "bg-green-500";
       case "Intermediate":
-        return "bg-yellow-500 text-black";
+        return "bg-yellow-400";
       case "Advanced":
-        return "bg-red-500 text-white";
+        return "bg-red-500";
       default:
-        return "bg-gray-500 text-white";
+        return "bg-gray-500";
     }
   };
 
   return (
-    <div className="flex gap-4 p-4 bg-card rounded-lg border hover:shadow-md transition-shadow">
+    <div className="flex gap-6 p-4 bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow">
       <img
         src={book.cover_url}
         alt={book.title}
-        className="w-20 h-28 object-cover rounded"
+        className="w-20 h-28 object-cover rounded-lg shadow-md flex-shrink-0"
       />
       
-      <div className="flex-1">
-        <div className="flex items-start justify-between gap-4">
-          <h3 className="font-semibold text-lg">{book.title}</h3>
-          
-          <div className="flex flex-col items-end gap-2">
-            <Badge className={getLevelColor(book.level)}>
-              {book.level}
-            </Badge>
-            
-            {isAvailable ? (
-              <div className="text-sm">
-                <span className="text-green-600 font-medium">Available</span>
-                <div className="text-muted-foreground">
-                  Volumes: {book.available_copies}
-                </div>
-              </div>
-            ) : (
-              <Badge variant="destructive">Not Available</Badge>
-            )}
-          </div>
+      <div className="flex-1 flex items-center justify-between gap-6">
+        <div className="flex-1">
+          <h3 className="font-semibold text-lg text-gray-900">{book.title}</h3>
+          <p className="text-sm text-gray-600 mt-1">{book.author}</p>
         </div>
         
-        <p className="text-sm text-muted-foreground mt-1">{book.author}</p>
-        
-        <div className="mt-3 text-sm">
+        <div className="flex items-center gap-4">
+          <div className={`${getLevelColor(book.level)} text-white px-4 py-2 rounded-full font-semibold text-sm`}>
+            {book.level}
+          </div>
+          
           {isAvailable ? (
-            <p className="text-muted-foreground">{book.shelf_location}</p>
+            <div className="text-sm text-right">
+              <div className="font-semibold text-green-600">Available</div>
+              <div className="text-gray-600">Volumes: {book.available_copies}</div>
+            </div>
           ) : (
-            <p className="text-muted-foreground">
-              Expected Date: {book.expected_date}
-            </p>
+            <div className="bg-gray-900 text-white px-4 py-2 rounded-full font-semibold text-sm">
+              Not Available
+            </div>
           )}
         </div>
+      </div>
+
+      <div className="flex-shrink-0 text-sm text-gray-600 max-w-[200px] text-right">
+        {isAvailable ? (
+          <p>{book.shelf_location}</p>
+        ) : (
+          <p>Expected Date ~ {book.expected_date}</p>
+        )}
       </div>
     </div>
   );

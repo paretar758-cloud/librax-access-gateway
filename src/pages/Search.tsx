@@ -1,5 +1,4 @@
 import DashboardLayout from "@/components/DashboardLayout";
-import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -52,31 +51,32 @@ const Search = () => {
     <DashboardLayout>
       <div className="space-y-6">
         {/* Search Bar */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           <div className="relative flex-1">
-            <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+            <SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
             <Input
               type="text"
               placeholder="Search by Title or Author"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10 h-12"
+              className="pl-12 h-14 rounded-2xl bg-white border-gray-200 shadow-sm"
             />
           </div>
-          <Button className="h-12 px-6">
+          <Button className="h-14 px-8 rounded-2xl bg-gray-900 hover:bg-gray-800">
             <SearchIcon className="h-5 w-5" />
           </Button>
         </div>
 
-        {/* Filters Section */}
-        <Card className="p-6">
-          <div className="flex items-center justify-between mb-4">
+        {/* Filters and Results */}
+        <div className="bg-white rounded-3xl p-6 shadow-sm">
+          {/* Filters Row */}
+          <div className="flex items-center justify-between mb-6 pb-4 border-b border-gray-200">
             <div className="flex gap-3 flex-wrap">
               <Select value={branchFilter} onValueChange={setBranchFilter}>
-                <SelectTrigger className="w-[150px]">
+                <SelectTrigger className="w-[150px] rounded-xl bg-white border-gray-300">
                   <SelectValue placeholder="Branch" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="bg-white">
                   <SelectItem value="all">All Branches</SelectItem>
                   {branches.map(branch => (
                     <SelectItem key={branch} value={branch}>{branch}</SelectItem>
@@ -85,10 +85,10 @@ const Search = () => {
               </Select>
 
               <Select value={skillFilter} onValueChange={setSkillFilter}>
-                <SelectTrigger className="w-[150px]">
+                <SelectTrigger className="w-[150px] rounded-xl bg-white border-gray-300">
                   <SelectValue placeholder="Skills" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="bg-white">
                   <SelectItem value="all">All Skills</SelectItem>
                   {skills.map(skill => (
                     <SelectItem key={skill} value={skill}>{skill}</SelectItem>
@@ -97,10 +97,10 @@ const Search = () => {
               </Select>
 
               <Select value={levelFilter} onValueChange={setLevelFilter}>
-                <SelectTrigger className="w-[150px]">
+                <SelectTrigger className="w-[150px] rounded-xl bg-white border-gray-300">
                   <SelectValue placeholder="Level" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="bg-white">
                   <SelectItem value="all">All Levels</SelectItem>
                   <SelectItem value="Beginner">Beginner</SelectItem>
                   <SelectItem value="Intermediate">Intermediate</SelectItem>
@@ -109,10 +109,10 @@ const Search = () => {
               </Select>
 
               <Select value={examFilter} onValueChange={setExamFilter}>
-                <SelectTrigger className="w-[150px]">
+                <SelectTrigger className="w-[150px] rounded-xl bg-white border-gray-300">
                   <SelectValue placeholder="Exam Tags" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="bg-white">
                   <SelectItem value="all">All Exams</SelectItem>
                   {exams.map(exam => (
                     <SelectItem key={exam} value={exam}>{exam}</SelectItem>
@@ -124,7 +124,7 @@ const Search = () => {
             <Button 
               variant="ghost" 
               onClick={() => setShowFilters(!showFilters)}
-              className="text-sm"
+              className="text-sm hover:bg-gray-100 rounded-xl"
             >
               Filter
             </Button>
@@ -132,26 +132,26 @@ const Search = () => {
 
           {/* Results Section */}
           <div>
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-bold">Search Results</h2>
-              <p className="text-sm text-muted-foreground">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-bold text-gray-900">Search Results</h2>
+              <p className="text-sm text-gray-600">
                 {filteredBooks.length} {filteredBooks.length === 1 ? 'book' : 'books'} found
               </p>
             </div>
 
-            <div className="space-y-3">
+            <div className="space-y-4">
               {filteredBooks.length > 0 ? (
                 filteredBooks.map(book => (
                   <BookCard key={book.id} book={book} />
                 ))
               ) : (
-                <p className="text-center text-muted-foreground py-8">
+                <p className="text-center text-gray-500 py-12">
                   No books found matching your criteria
                 </p>
               )}
             </div>
           </div>
-        </Card>
+        </div>
       </div>
     </DashboardLayout>
   );
