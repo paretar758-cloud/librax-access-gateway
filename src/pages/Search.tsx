@@ -1,15 +1,158 @@
 import DashboardLayout from "@/components/DashboardLayout";
 import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Search as SearchIcon } from "lucide-react";
+import { useState, useMemo } from "react";
+import { mockBooks } from "@/data/booksData";
+import BookCard from "@/components/search/BookCard";
 
 const Search = () => {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [branchFilter, setBranchFilter] = useState("all");
+  const [skillFilter, setSkillFilter] = useState("all");
+  const [levelFilter, setLevelFilter] = useState("all");
+  const [examFilter, setExamFilter] = useState("all");
+  const [showFilters, setShowFilters] = useState(false);
+
+  // Extract unique values for filters
+  const branches = useMemo(() => {
+    const unique = Array.from(new Set(mockBooks.map(book => book.branch)));
+    return unique.sort();
+  }, []);
+
+  const skills = useMemo(() => {
+    const unique = Array.from(new Set(mockBooks.map(book => book.skill)));
+    return unique.sort();
+  }, []);
+
+  const exams = useMemo(() => {
+    const unique = Array.from(new Set(mockBooks.map(book => book.exam)));
+    return unique.sort();
+  }, []);
+
+  // Filter books based on search and filters
+  const filteredBooks = useMemo(() => {
+    return mockBooks.filter(book => {
+      const matchesSearch = searchQuery === "" || 
+        book.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        book.author.toLowerCase().includes(searchQuery.toLowerCase());
+
+      const matchesBranch = branchFilter === "all" || book.branch === branchFilter;
+      const matchesSkill = skillFilter === "all" || book.skill === skillFilter;
+      const matchesLevel = levelFilter === "all" || book.level === levelFilter;
+      const matchesExam = examFilter === "all" || book.exam === examFilter;
+
+      return matchesSearch && matchesBranch && matchesSkill && matchesLevel && matchesExam;
+    });
+  }, [searchQuery, branchFilter, skillFilter, levelFilter, examFilter]);
+
   return (
     <DashboardLayout>
-      <div className="flex items-center gap-4 mb-6">
-        <h1 className="text-4xl font-bold">Search</h1>
+      <div className="space-y-6">
+        {/* Search Bar */}
+        <div className="flex items-center gap-2">
+          <div className="relative flex-1">
+            <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+            <Input
+              type="text"
+              placeholder="Search by Title or Author"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-10 h-12"
+            />
+          </div>
+          <Button className="h-12 px-6">
+            <SearchIcon className="h-5 w-5" />
+          </Button>
+        </div>
+
+        {/* Filters Section */}
+        <Card className="p-6">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex gap-3 flex-wrap">
+              <Select value={branchFilter} onValueChange={setBranchFilter}>
+                <SelectTrigger className="w-[150px]">
+                  <SelectValue placeholder="Branch" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Branches</SelectItem>
+                  {branches.map(branch => (
+                    <SelectItem key={branch} value={branch}>{branch}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
+              <Select value={skillFilter} onValueChange={setSkillFilter}>
+                <SelectTrigger className="w-[150px]">
+                  <SelectValue placeholder="Skills" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Skills</SelectItem>
+                  {skills.map(skill => (
+                    <SelectItem key={skill} value={skill}>{skill}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
+              <Select value={levelFilter} onValueChange={setLevelFilter}>
+                <SelectTrigger className="w-[150px]">
+                  <SelectValue placeholder="Level" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Levels</SelectItem>
+                  <SelectItem value="Beginner">Beginner</SelectItem>
+                  <SelectItem value="Intermediate">Intermediate</SelectItem>
+                  <SelectItem value="Advanced">Advanced</SelectItem>
+                </SelectContent>
+              </Select>
+
+              <Select value={examFilter} onValueChange={setExamFilter}>
+                <SelectTrigger className="w-[150px]">
+                  <SelectValue placeholder="Exam Tags" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Exams</SelectItem>
+                  {exams.map(exam => (
+                    <SelectItem key={exam} value={exam}>{exam}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <Button 
+              variant="ghost" 
+              onClick={() => setShowFilters(!showFilters)}
+              className="text-sm"
+            >
+              Filter
+            </Button>
+          </div>
+
+          {/* Results Section */}
+          <div>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-bold">Search Results</h2>
+              <p className="text-sm text-muted-foreground">
+                {filteredBooks.length} {filteredBooks.length === 1 ? 'book' : 'books'} found
+              </p>
+            </div>
+
+            <div className="space-y-3">
+              {filteredBooks.length > 0 ? (
+                filteredBooks.map(book => (
+                  <BookCard key={book.id} book={book} />
+                ))
+              ) : (
+                <p className="text-center text-muted-foreground py-8">
+                  No books found matching your criteria
+                </p>
+              )}
+            </div>
+          </div>
+        </Card>
       </div>
-      <Card className="p-8">
-        <p className="text-muted-foreground text-center">Search functionality coming soon...</p>
-      </Card>
     </DashboardLayout>
   );
 };
