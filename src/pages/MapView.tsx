@@ -31,11 +31,11 @@ const MapView = () => {
 
     // Map coordinates based on the library map image
     const positions: { [key: number]: { baseX: number, baseY: number, columnWidth: number, rowHeight: number } } = {
-      1: { baseX: 15, baseY: 30, columnWidth: 3.5, rowHeight: 8 }, // Book Shelf -1 (9 columns, 5 rows)
-      2: { baseX: 10, baseY: 10, columnWidth: 3, rowHeight: 8 }, // Book Shelf -2 (3 columns, 5 rows)
-      3: { baseX: 60, baseY: 5, columnWidth: 5, rowHeight: 8 }, // Book Shelf -3 (4 columns, 5 rows)
-      4: { baseX: 75, baseY: 30, columnWidth: 3, rowHeight: 8 }, // Book Shelf -4 (17 columns, 5 rows)
-      5: { baseX: 75, baseY: 70, columnWidth: 5, rowHeight: 6 }, // Book Shelf -5 (4 columns, 5 rows)
+      1: { baseX: 5, baseY: 32, columnWidth: 1.8, rowHeight: 12 }, // Book Shelf -1 (C1-C9, 5 rows) - left side vertical
+      2: { baseX: 2, baseY: 8, columnWidth: 2.5, rowHeight: 14 }, // Book Shelf -2 (3 columns, 5 rows) - top left
+      3: { baseX: 82, baseY: 3, columnWidth: 3, rowHeight: 14 }, // Book Shelf -3 (4 columns, 5 rows) - top right
+      4: { baseX: 68, baseY: 15, columnWidth: 0.9, rowHeight: 14 }, // Book Shelf -4 (17 columns, 5 rows) - right side vertical
+      5: { baseX: 68, baseY: 82, columnWidth: 4, rowHeight: 3 }, // Book Shelf -5 (4 columns, 5 rows) - bottom right horizontal
     };
 
     const config = positions[shelf];
