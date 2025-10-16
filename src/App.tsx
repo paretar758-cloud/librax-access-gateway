@@ -11,6 +11,8 @@ import MapView from "./pages/MapView";
 import Roadmap from "./pages/Roadmap";
 import SkillDetail from "./pages/SkillDetail";
 import FullRoadmap from "./pages/FullRoadmap";
+import ExamDetail from "./pages/ExamDetail";
+import FullExamRoadmap from "./pages/FullExamRoadmap";
 import Requests from "./pages/Requests";
 import BorrowHistory from "./pages/BorrowHistory";
 import NotFound from "./pages/NotFound";
@@ -32,6 +34,8 @@ const App = () => (
           <Route path="/roadmap" element={<Roadmap />} />
           <Route path="/roadmap/:skillId" element={<SkillDetail />} />
           <Route path="/roadmap/:skillId/full" element={<FullRoadmap />} />
+          <Route path="/exam/:examId" element={<ExamDetail />} />
+          <Route path="/exam/:examId/roadmap" element={<FullExamRoadmap />} />
           <Route path="/requests" element={<Requests />} />
           <Route path="/borrow-history" element={<BorrowHistory />} />
           <Route path="*" element={<NotFound />} />

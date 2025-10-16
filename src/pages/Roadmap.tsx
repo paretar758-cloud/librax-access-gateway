@@ -50,10 +50,7 @@ const Roadmap = () => {
                   key={exam.id}
                   variant="outline"
                   className="w-full justify-start text-lg h-auto py-4 px-6 rounded-full font-semibold transition-all hover:scale-105"
-                  onClick={() => {
-                    // Future: Navigate to exam details
-                    console.log(`Clicked on ${exam.name}`);
-                  }}
+                  onClick={() => navigate(`/exam/${exam.id}`)}
                 >
                   {exam.name}
                 </Button>

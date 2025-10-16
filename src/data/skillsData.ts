@@ -473,10 +473,389 @@ export const skills: Skill[] = [
   }
 ];
 
-export const exams: Exam[] = [
-  { id: "icpc", name: "ICPC", fullName: "International Collegiate Programming Contest" },
-  { id: "gssoc", name: "GSSOC", fullName: "GirlScript Summer of Code" },
-  { id: "rtu", name: "RTU", fullName: "RTU Examinations" },
-  { id: "gate", name: "GATE", fullName: "Graduate Aptitude Test in Engineering" },
-  { id: "sih", name: "SIH", fullName: "Smart India Hackathon" }
+export interface ExamDetail {
+  id: string;
+  name: string;
+  fullName: string;
+  description: string;
+  benefits: string[];
+  roadmap: RoadmapStep[];
+}
+
+export const exams: ExamDetail[] = [
+  {
+    id: "icpc",
+    name: "ICPC",
+    fullName: "International Collegiate Programming Contest",
+    description: "The premier global programming competition for university students, testing algorithmic and problem-solving skills",
+    benefits: [
+      "Enhance problem-solving and algorithmic thinking",
+      "Boost resume with internationally recognized achievement",
+      "Network with top programmers worldwide",
+      "Improve competitive programming skills",
+      "Potential recruitment opportunities from top tech companies"
+    ],
+    roadmap: [
+      {
+        id: 1,
+        title: "Programming Fundamentals",
+        description: "Master a programming language (C++, Java, or Python)",
+        bookIds: ["40", "1"]
+      },
+      {
+        id: 2,
+        title: "Data Structures",
+        description: "Learn arrays, linked lists, stacks, queues, trees, graphs",
+        bookIds: ["3"]
+      },
+      {
+        id: 3,
+        title: "Algorithm Design",
+        description: "Study sorting, searching, and basic algorithms",
+        bookIds: ["3", "22"]
+      },
+      {
+        id: 4,
+        title: "Advanced Data Structures",
+        description: "Master heaps, hash tables, segment trees, tries",
+        bookIds: ["3"]
+      },
+      {
+        id: 5,
+        title: "Dynamic Programming",
+        description: "Learn DP techniques and practice problems",
+        bookIds: ["3", "22"]
+      },
+      {
+        id: 6,
+        title: "Graph Algorithms",
+        description: "Study BFS, DFS, shortest paths, MST",
+        bookIds: ["3"]
+      },
+      {
+        id: 7,
+        title: "String Algorithms",
+        description: "Learn pattern matching and string manipulation",
+        bookIds: ["3"]
+      },
+      {
+        id: 8,
+        title: "Mathematics & Number Theory",
+        description: "Study combinatorics, probability, and number theory",
+        bookIds: ["44"]
+      },
+      {
+        id: 9,
+        title: "Practice & Mock Contests",
+        description: "Regular practice on online judges and mock contests",
+        bookIds: ["3", "22"]
+      },
+      {
+        id: 10,
+        title: "Team Practice",
+        description: "Practice with team, develop collaboration strategies",
+        bookIds: ["3"]
+      }
+    ]
+  },
+  {
+    id: "gssoc",
+    name: "GSSOC",
+    fullName: "GirlScript Summer of Code",
+    description: "A 3-month open-source program for students to contribute to real-world projects and gain practical experience",
+    benefits: [
+      "Gain real-world open-source experience",
+      "Build portfolio with meaningful contributions",
+      "Learn industry-standard development workflows",
+      "Get mentorship from experienced developers",
+      "Earn certificates and recognition"
+    ],
+    roadmap: [
+      {
+        id: 1,
+        title: "Git & GitHub Basics",
+        description: "Learn version control and collaboration",
+        bookIds: ["24"]
+      },
+      {
+        id: 2,
+        title: "Open Source Fundamentals",
+        description: "Understand open source culture and contributions",
+        bookIds: ["24"]
+      },
+      {
+        id: 3,
+        title: "Choose Tech Stack",
+        description: "Pick a technology you want to contribute in",
+        bookIds: ["41", "36", "40"]
+      },
+      {
+        id: 4,
+        title: "Code Quality",
+        description: "Learn clean code and best practices",
+        bookIds: ["8", "22"]
+      },
+      {
+        id: 5,
+        title: "Documentation Skills",
+        description: "Write clear documentation and README files",
+        bookIds: ["8"]
+      },
+      {
+        id: 6,
+        title: "Issue Tracking",
+        description: "Learn to find, understand, and solve issues",
+        bookIds: ["24"]
+      },
+      {
+        id: 7,
+        title: "Pull Request Best Practices",
+        description: "Create quality PRs and handle reviews",
+        bookIds: ["24", "8"]
+      },
+      {
+        id: 8,
+        title: "Testing & Debugging",
+        description: "Write tests and debug code effectively",
+        bookIds: ["47"]
+      },
+      {
+        id: 9,
+        title: "Communication Skills",
+        description: "Engage with maintainers and community",
+        bookIds: ["8"]
+      },
+      {
+        id: 10,
+        title: "Project Selection",
+        description: "Choose GSSOC projects matching your skills",
+        bookIds: ["24"]
+      }
+    ]
+  },
+  {
+    id: "rtu",
+    name: "RTU",
+    fullName: "RTU Examinations",
+    description: "Rajasthan Technical University examinations covering core engineering subjects",
+    benefits: [
+      "Strong foundation in engineering fundamentals",
+      "Essential for degree completion and grades",
+      "Prepares for competitive exams and placements",
+      "Deep understanding of technical subjects",
+      "Builds analytical and problem-solving skills"
+    ],
+    roadmap: [
+      {
+        id: 1,
+        title: "Programming Fundamentals",
+        description: "Master C, C++, and Python programming",
+        bookIds: ["40", "1"]
+      },
+      {
+        id: 2,
+        title: "Data Structures",
+        description: "Learn all fundamental data structures",
+        bookIds: ["3"]
+      },
+      {
+        id: 3,
+        title: "Database Systems",
+        description: "Study SQL, normalization, and DBMS concepts",
+        bookIds: ["18"]
+      },
+      {
+        id: 4,
+        title: "Operating Systems",
+        description: "Understand OS concepts and management",
+        bookIds: ["4"]
+      },
+      {
+        id: 5,
+        title: "Computer Networks",
+        description: "Learn networking layers and protocols",
+        bookIds: ["12"]
+      },
+      {
+        id: 6,
+        title: "Software Engineering",
+        description: "Study SDLC, design patterns, and testing",
+        bookIds: ["22", "47", "5"]
+      },
+      {
+        id: 7,
+        title: "Web Technologies",
+        description: "Master HTML, CSS, JavaScript frameworks",
+        bookIds: ["49", "11", "41"]
+      },
+      {
+        id: 8,
+        title: "Mathematics",
+        description: "Discrete math, probability, and statistics",
+        bookIds: ["44"]
+      },
+      {
+        id: 9,
+        title: "Previous Year Papers",
+        description: "Practice previous RTU exam papers",
+        bookIds: ["3", "18", "4"]
+      },
+      {
+        id: 10,
+        title: "Revision & Mock Tests",
+        description: "Comprehensive revision and test practice",
+        bookIds: ["3", "18", "12"]
+      }
+    ]
+  },
+  {
+    id: "gate",
+    name: "GATE",
+    fullName: "Graduate Aptitude Test in Engineering",
+    description: "National level exam for admission to PG programs and PSU recruitment in India",
+    benefits: [
+      "Gateway to premier institutes like IITs and NITs",
+      "Qualification for PSU jobs with excellent packages",
+      "Scholarship opportunities for higher studies",
+      "Validates engineering knowledge and aptitude",
+      "Opens doors to research and academic careers"
+    ],
+    roadmap: [
+      {
+        id: 1,
+        title: "Syllabus Analysis",
+        description: "Understand GATE CS syllabus thoroughly",
+        bookIds: ["3", "18", "4"]
+      },
+      {
+        id: 2,
+        title: "Programming & DS",
+        description: "Master programming and data structures",
+        bookIds: ["3", "40"]
+      },
+      {
+        id: 3,
+        title: "Algorithms",
+        description: "Study algorithms and complexity analysis",
+        bookIds: ["3", "22"]
+      },
+      {
+        id: 4,
+        title: "Database Management",
+        description: "Learn DBMS concepts in depth",
+        bookIds: ["18"]
+      },
+      {
+        id: 5,
+        title: "Operating Systems",
+        description: "Master OS fundamentals and concepts",
+        bookIds: ["4"]
+      },
+      {
+        id: 6,
+        title: "Computer Networks",
+        description: "Deep dive into networking protocols",
+        bookIds: ["12"]
+      },
+      {
+        id: 7,
+        title: "Theory of Computation",
+        description: "Study automata and formal languages",
+        bookIds: ["3"]
+      },
+      {
+        id: 8,
+        title: "Digital Logic & COA",
+        description: "Computer organization and architecture",
+        bookIds: ["4"]
+      },
+      {
+        id: 9,
+        title: "Previous Papers",
+        description: "Solve last 10+ years GATE papers",
+        bookIds: ["3", "18", "4"]
+      },
+      {
+        id: 10,
+        title: "Mock Tests & Revision",
+        description: "Take full-length mocks and revise",
+        bookIds: ["3", "18", "12"]
+      }
+    ]
+  },
+  {
+    id: "sih",
+    name: "SIH",
+    fullName: "Smart India Hackathon",
+    description: "India's biggest hackathon solving real-world problems for government and industry",
+    benefits: [
+      "Solve real problems for government/industry",
+      "Win cash prizes and recognition",
+      "Build innovative solutions with team",
+      "Network with industry experts and mentors",
+      "Fast-track recruitment opportunities"
+    ],
+    roadmap: [
+      {
+        id: 1,
+        title: "Problem Understanding",
+        description: "Analyze problem statements thoroughly",
+        bookIds: ["8", "22"]
+      },
+      {
+        id: 2,
+        title: "Team Formation",
+        description: "Build diverse team with complementary skills",
+        bookIds: ["5"]
+      },
+      {
+        id: 3,
+        title: "Technology Stack",
+        description: "Choose appropriate tech for the problem",
+        bookIds: ["41", "36", "14"]
+      },
+      {
+        id: 4,
+        title: "Rapid Prototyping",
+        description: "Build quick prototypes to validate ideas",
+        bookIds: ["49", "41"]
+      },
+      {
+        id: 5,
+        title: "Full-Stack Development",
+        description: "Develop frontend and backend components",
+        bookIds: ["41", "36", "18"]
+      },
+      {
+        id: 6,
+        title: "AI/ML Integration",
+        description: "Add intelligent features if applicable",
+        bookIds: ["31", "17"]
+      },
+      {
+        id: 7,
+        title: "Deployment",
+        description: "Deploy solution on cloud platforms",
+        bookIds: ["14", "20"]
+      },
+      {
+        id: 8,
+        title: "Presentation Skills",
+        description: "Create compelling pitch and demo",
+        bookIds: ["8"]
+      },
+      {
+        id: 9,
+        title: "Testing & Debugging",
+        description: "Ensure solution works flawlessly",
+        bookIds: ["47"]
+      },
+      {
+        id: 10,
+        title: "Final Preparation",
+        description: "Rehearse presentation and finalize demo",
+        bookIds: ["8", "5"]
+      }
+    ]
+  }
 ];
