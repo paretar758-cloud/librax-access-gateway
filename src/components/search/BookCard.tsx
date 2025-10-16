@@ -1,11 +1,19 @@
 import { Book } from "@/data/booksData";
+import { Button } from "@/components/ui/button";
+import { MapPin } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 interface BookCardProps {
   book: Book;
 }
 
 const BookCard = ({ book }: BookCardProps) => {
+  const navigate = useNavigate();
   const isAvailable = book.available_copies > 0;
+
+  const handleViewOnMap = () => {
+    navigate(`/map?shelf=${encodeURIComponent(book.shelf_location)}`);
+  };
 
   const getLevelColor = (level: string) => {
     switch (level) {
@@ -52,11 +60,24 @@ const BookCard = ({ book }: BookCardProps) => {
         </div>
       </div>
 
-      <div className="flex-shrink-0 text-sm text-gray-600 max-w-[200px] text-right">
-        {isAvailable ? (
-          <p>{book.shelf_location}</p>
-        ) : (
-          <p>Expected Date ~ {book.expected_date}</p>
+      <div className="flex-shrink-0 flex flex-col gap-2 items-end max-w-[200px]">
+        <div className="text-sm text-gray-600 text-right">
+          {isAvailable ? (
+            <p>{book.shelf_location}</p>
+          ) : (
+            <p>Expected Date ~ {book.expected_date}</p>
+          )}
+        </div>
+        {isAvailable && (
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={handleViewOnMap}
+            className="gap-2"
+          >
+            <MapPin className="w-4 h-4" />
+            View on Map
+          </Button>
         )}
       </div>
     </div>
