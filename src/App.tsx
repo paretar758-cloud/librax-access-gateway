@@ -9,6 +9,8 @@ import Dashboard from "./pages/Dashboard";
 import Search from "./pages/Search";
 import MapView from "./pages/MapView";
 import Roadmap from "./pages/Roadmap";
+import SkillDetail from "./pages/SkillDetail";
+import FullRoadmap from "./pages/FullRoadmap";
 import Requests from "./pages/Requests";
 import BorrowHistory from "./pages/BorrowHistory";
 import NotFound from "./pages/NotFound";
@@ -28,6 +30,8 @@ const App = () => (
           <Route path="/search" element={<Search />} />
           <Route path="/map" element={<MapView />} />
           <Route path="/roadmap" element={<Roadmap />} />
+          <Route path="/roadmap/:skillId" element={<SkillDetail />} />
+          <Route path="/roadmap/:skillId/full" element={<FullRoadmap />} />
           <Route path="/requests" element={<Requests />} />
           <Route path="/borrow-history" element={<BorrowHistory />} />
           <Route path="*" element={<NotFound />} />
