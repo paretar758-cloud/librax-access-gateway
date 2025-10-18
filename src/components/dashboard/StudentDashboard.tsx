@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAuth } from "@/hooks/useAuth";
 import BorrowedBookCard from "./BorrowedBookCard";
+import ProfileSection from "./ProfileSection";
 
 const StudentDashboard = () => {
   const { user } = useAuth();
@@ -38,6 +39,8 @@ const StudentDashboard = () => {
 
   return (
     <div className="space-y-8">
+      {user && <ProfileSection user={user} />}
+
       <div className="flex items-center gap-4 mb-6">
         <div className="w-12 h-12 bg-accent rounded-lg flex items-center justify-center">
           <span className="text-2xl">🏠</span>
