@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { Home, Search, Map, Route, MessageSquare, BookOpen, ClipboardList } from "lucide-react";
+import { Home, Search, Map, Route, MessageSquare, BookOpen, ClipboardList, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface SidebarProps {
@@ -8,6 +8,7 @@ interface SidebarProps {
 
 const Sidebar = ({ role }: SidebarProps) => {
   const navItems = [
+    { title: "Profile", icon: User, path: "/profile", roles: ["admin", "student"] },
     { title: "Home", icon: Home, path: "/dashboard", roles: ["admin", "student"] },
     { title: "Search", icon: Search, path: "/search", roles: ["admin", "student"] },
     { title: "Map", icon: Map, path: "/map", roles: ["admin", "student"] },
