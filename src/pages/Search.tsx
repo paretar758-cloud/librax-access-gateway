@@ -2,10 +2,13 @@ import DashboardLayout from "@/components/DashboardLayout";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Search as SearchIcon } from "lucide-react";
-import { useState, useMemo } from "react";
+import { useState, useMemo, memo } from "react";
 import { mockBooks } from "@/data/booksData";
 import BookCard from "@/components/search/BookCard";
+
+const BookCardMemo = memo(BookCard);
 
 const Search = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -139,10 +142,10 @@ const Search = () => {
               </p>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-4 animate-fade-in">
               {filteredBooks.length > 0 ? (
                 filteredBooks.map(book => (
-                  <BookCard key={book.id} book={book} />
+                  <BookCardMemo key={book.id} book={book} />
                 ))
               ) : (
                 <p className="text-center text-gray-500 py-12">

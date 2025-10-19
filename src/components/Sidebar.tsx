@@ -1,12 +1,13 @@
 import { NavLink } from "react-router-dom";
 import { Home, Search, Map, Route, MessageSquare, BookOpen, ClipboardList, User } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { memo } from "react";
 
 interface SidebarProps {
   role: string | null;
 }
 
-const Sidebar = ({ role }: SidebarProps) => {
+const Sidebar = memo(({ role }: SidebarProps) => {
   const navItems = [
     { title: "Profile", icon: User, path: "/profile", roles: ["admin", "student"] },
     { title: "Home", icon: Home, path: "/dashboard", roles: ["admin", "student"] },
@@ -52,6 +53,8 @@ const Sidebar = ({ role }: SidebarProps) => {
       </nav>
     </aside>
   );
-};
+});
+
+Sidebar.displayName = "Sidebar";
 
 export default Sidebar;
