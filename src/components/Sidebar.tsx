@@ -38,10 +38,10 @@ const Sidebar = ({ role }: SidebarProps) => {
             to={item.path}
             className={({ isActive }) =>
               cn(
-                "flex items-center gap-3 px-4 py-3 rounded-lg text-lg font-medium transition-colors",
+                "flex items-center gap-3 px-4 py-3 rounded-lg text-lg font-medium transition-all duration-300 ease-in-out",
                 isActive
                   ? "bg-accent text-accent-foreground"
-                  : "text-foreground hover:bg-secondary"
+                  : "text-foreground hover:bg-secondary hover:translate-x-1"
               )
             }
           >

@@ -26,11 +26,8 @@ const Roadmap = () => {
               {skills.map((skill) => (
                 <Button
                   key={skill.id}
-                  variant={skill.color === "primary" ? "default" : "secondary"}
-                  className={cn(
-                    "w-full justify-start text-lg h-auto py-4 px-6 rounded-full font-semibold transition-all hover:scale-105",
-                    skill.color === "primary" && "bg-primary hover:bg-primary/90"
-                  )}
+                  variant="outline"
+                  className="w-full justify-start text-lg h-auto py-4 px-6 rounded-full font-semibold transition-all hover:scale-105 hover:bg-orange-500 hover:text-white hover:border-orange-500"
                   onClick={() => navigate(`/roadmap/${skill.id}`)}
                 >
                   {skill.name}
@@ -49,7 +46,7 @@ const Roadmap = () => {
                 <Button
                   key={exam.id}
                   variant="outline"
-                  className="w-full justify-start text-lg h-auto py-4 px-6 rounded-full font-semibold transition-all hover:scale-105"
+                  className="w-full justify-start text-lg h-auto py-4 px-6 rounded-full font-semibold transition-all hover:scale-105 hover:bg-orange-500 hover:text-white hover:border-orange-500"
                   onClick={() => navigate(`/exam/${exam.id}`)}
                 >
                   {exam.name}
