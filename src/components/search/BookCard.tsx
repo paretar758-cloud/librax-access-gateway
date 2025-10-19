@@ -46,63 +46,92 @@ const BookCard = ({ book }: BookCardProps) => {
   };
 
   const fetchLikesAndComments = async () => {
-    // Fetch likes count
-    const { count: likes } = await supabase
-      .from("book_likes")
-      .select("*", { count: "exact", head: true })
-      .eq("book_id", book.id);
+    // Check if book ID is a valid UUID (real database book)
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    const isValidUUID = uuidRegex.test(book.id);
     
-    setLikeCount(likes || 0);
-
-    // Check if current user liked
-    const { data: { user } } = await supabase.auth.getUser();
-    if (user) {
-      const { data } = await supabase
-        .from("book_likes")
-        .select("id")
-        .eq("book_id", book.id)
-        .eq("user_id", user.id)
-        .maybeSingle();
-      
-      setIsLiked(!!data);
+    if (!isValidUUID) {
+      // Skip database calls for mock books with string IDs
+      return;
     }
 
-    // Fetch comments count
-    const { count: commentsNum } = await supabase
-      .from("book_comments")
-      .select("*", { count: "exact", head: true })
-      .eq("book_id", book.id);
-    
-    setCommentCount(commentsNum || 0);
+    try {
+      // Fetch likes count
+      const { count: likes, error: likesError } = await supabase
+        .from("book_likes")
+        .select("*", { count: "exact", head: true })
+        .eq("book_id", book.id);
+      
+      if (!likesError) {
+        setLikeCount(likes || 0);
+      }
 
-    // Fetch comments with user profiles
-    const { data: commentsData } = await supabase
-      .from("book_comments")
-      .select("*")
-      .eq("book_id", book.id)
-      .order("created_at", { ascending: false });
-    
-    if (commentsData) {
-      // Fetch profiles separately for each comment
-      const commentsWithProfiles = await Promise.all(
-        commentsData.map(async (comment) => {
-          const { data: profile } = await supabase
-            .from("profiles")
-            .select("full_name")
-            .eq("id", comment.user_id)
-            .maybeSingle();
-          
-          return {
-            ...comment,
-            profiles: profile || { full_name: "Anonymous" },
-          };
-        })
-      );
-      setComments(commentsWithProfiles);
+      // Check if current user liked
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        const { data } = await supabase
+          .from("book_likes")
+          .select("id")
+          .eq("book_id", book.id)
+          .eq("user_id", user.id)
+          .maybeSingle();
+        
+        setIsLiked(!!data);
+      }
+
+      // Fetch comments count
+      const { count: commentsNum, error: commentsError } = await supabase
+        .from("book_comments")
+        .select("*", { count: "exact", head: true })
+        .eq("book_id", book.id);
+      
+      if (!commentsError) {
+        setCommentCount(commentsNum || 0);
+      }
+
+      // Fetch comments with user profiles
+      const { data: commentsData } = await supabase
+        .from("book_comments")
+        .select("*")
+        .eq("book_id", book.id)
+        .order("created_at", { ascending: false });
+      
+      if (commentsData) {
+        // Fetch profiles separately for each comment
+        const commentsWithProfiles = await Promise.all(
+          commentsData.map(async (comment) => {
+            const { data: profile } = await supabase
+              .from("profiles")
+              .select("full_name")
+              .eq("id", comment.user_id)
+              .maybeSingle();
+            
+            return {
+              ...comment,
+              profiles: profile || { full_name: "Anonymous" },
+            };
+          })
+        );
+
+        setComments(commentsWithProfiles);
+      }
+    } catch (error) {
+      console.error("Error fetching likes and comments:", error);
     }
   };
 
   const handleLike = async () => {
+    // Check if book ID is a valid UUID
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    if (!uuidRegex.test(book.id)) {
+      toast({
+        title: "Feature unavailable",
+        description: "Likes are only available for library books",
+        variant: "destructive",
+      });
+      return;
+    }
+
     const { data: { user } } = await supabase.auth.getUser();
     
     if (!user) {
@@ -137,6 +166,17 @@ const BookCard = ({ book }: BookCardProps) => {
 
   const handleAddComment = async () => {
     if (!newComment.trim()) return;
+
+    // Check if book ID is a valid UUID
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    if (!uuidRegex.test(book.id)) {
+      toast({
+        title: "Feature unavailable",
+        description: "Comments are only available for library books",
+        variant: "destructive",
+      });
+      return;
+    }
 
     const { data: { user } } = await supabase.auth.getUser();
     
