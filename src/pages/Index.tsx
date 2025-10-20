@@ -1,59 +1,140 @@
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "@/hooks/useAuth";
-import { BookOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Search, Bell, Map, BookMarked } from "lucide-react";
+import FeatureCard from "@/components/FeatureCard";
+import heroImage from "@/assets/hero-library.jpg";
 
 const Index = () => {
-  const { user, loading } = useAuth();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!loading && user) {
-      navigate("/dashboard");
+  const features = [
+    {
+      icon: Search,
+      title: "Smart Search & Filtering",
+      description: "Find books instantly with advanced search capabilities and intelligent filtering options"
+    },
+    {
+      icon: BookMarked,
+      title: "Color-Coded Dashboard",
+      description: "Track your borrowings at a glance with an intuitive, color-coded interface"
+    },
+    {
+      icon: Map,
+      title: "Map-Based Navigation",
+      description: "Locate books easily with our interactive shelf mapping system"
+    },
+    {
+      icon: Bell,
+      title: "Smart Notifications",
+      description: "Stay informed about due dates, new arrivals, and penalty reminders"
     }
-  }, [user, loading, navigate]);
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-accent mx-auto"></div>
-          <p className="mt-4 text-muted-foreground">Loading...</p>
-        </div>
-      </div>
-    );
-  }
+  ];
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-background p-4">
-      <div className="text-center space-y-8 max-w-2xl">
-        <div className="flex justify-center">
-          <div className="w-32 h-32 rounded-full border-4 border-foreground flex items-center justify-center bg-background">
-            <BookOpen className="w-16 h-16" />
-          </div>
-        </div>
-        
-        <div>
-          <h1 className="text-5xl font-bold mb-4">Welcome to LibraX</h1>
-          <p className="text-xl text-muted-foreground mb-2">
-            Smart Library Management System
-          </p>
-          <p className="text-lg text-muted-foreground italic">
-            "learning without curiosity is just a waste of time."
-          </p>
-        </div>
-
-        <div className="flex gap-4 justify-center">
-          <Button
-            size="lg"
-            onClick={() => navigate("/auth")}
-            className="bg-accent hover:bg-accent/90 text-lg px-8"
-          >
-            Get Started
+    <div className="min-h-screen bg-background">
+      {/* Header */}
+      <header className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-50">
+        <div className="container mx-auto px-6 py-4 flex items-center justify-between">
+          <h1 className="text-3xl md:text-4xl font-brand font-black text-primary tracking-tight">LibraX</h1>
+          <Button variant="outline" onClick={() => navigate("/role-selection")}>
+            Sign In
           </Button>
         </div>
-      </div>
+      </header>
+
+      {/* Hero Section */}
+      <section className="bg-hero-gradient py-20 px-6">
+        <div className="container mx-auto max-w-6xl">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div className="space-y-8">
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-brand font-black leading-tight text-foreground">
+                Your Smart
+                <span className="block text-primary">Library Gateway</span>
+              </h1>
+              <p className="text-xl text-muted-foreground leading-relaxed">
+                Experience library management reimagined. Find, borrow, and track books with ease.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Button 
+                  size="xl" 
+                  variant="hero"
+                  onClick={() => navigate("/role-selection")}
+                >
+                  Get Started
+                </Button>
+                <Button 
+                  size="xl" 
+                  variant="outline"
+                  onClick={() => {
+                    document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                >
+                  Learn More
+                </Button>
+              </div>
+            </div>
+            <div className="relative">
+              <img
+                src={heroImage}
+                alt="Modern library interior"
+                className="rounded-2xl shadow-soft-lg w-full h-auto"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section id="features" className="py-20 px-6 bg-background">
+        <div className="container mx-auto max-w-6xl">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-brand font-black mb-4 text-foreground">
+              Powerful Features
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              Everything you need for a seamless library experience
+            </p>
+          </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {features.map((feature, index) => (
+              <FeatureCard
+                key={index}
+                icon={feature.icon}
+                title={feature.title}
+                description={feature.description}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-20 px-6 bg-hero-gradient">
+        <div className="container mx-auto max-w-4xl text-center">
+          <h2 className="text-4xl md:text-5xl font-brand font-black mb-6 text-foreground">
+            Ready to Transform Your Library Experience?
+          </h2>
+          <p className="text-xl text-muted-foreground mb-8">
+            Join LibraX today and discover a smarter way to manage your reading journey.
+          </p>
+          <Button 
+            size="xl" 
+            variant="hero"
+            onClick={() => navigate("/role-selection")}
+          >
+            Get Started Now
+          </Button>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="border-t border-border py-8 px-6 bg-card">
+        <div className="container mx-auto max-w-6xl text-center">
+          <p className="text-muted-foreground">
+            © 2025 LibraX. Smart Library Management System.
+          </p>
+        </div>
+      </footer>
     </div>
   );
 };
