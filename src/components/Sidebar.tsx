@@ -41,8 +41,8 @@ const Sidebar = memo(({ role }: SidebarProps) => {
               cn(
                 "flex items-center gap-3 px-4 py-3 rounded-lg text-lg font-medium transition-all duration-300 ease-in-out",
                 isActive
-                  ? "bg-accent text-accent-foreground"
-                  : "text-foreground hover:bg-secondary hover:translate-x-1"
+                  ? "bg-orange-500 text-white"
+                  : "text-foreground hover:bg-orange-500 hover:text-white hover:translate-x-1"
               )
             }
           >
