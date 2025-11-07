@@ -7,6 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Textarea } from "@/components/ui/textarea";
 import { formatDistanceToNow } from "date-fns";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface BookCardProps {
   book: Book;
@@ -19,6 +20,8 @@ interface Comment {
   created_at: string;
   profiles: {
     full_name: string;
+    profile_photo_url: string;
+    current_year: string;
   };
 }
 
@@ -116,13 +119,13 @@ const BookCard = ({ book }: BookCardProps) => {
           commentsData.map(async (comment) => {
             const { data: profile } = await supabase
               .from("profiles")
-              .select("full_name")
+              .select("full_name, profile_photo_url, current_year")
               .eq("id", comment.user_id)
               .maybeSingle();
             
             return {
               ...comment,
-              profiles: profile || { full_name: "Anonymous" },
+              profiles: profile || { full_name: "Anonymous", profile_photo_url: "", current_year: "" },
             };
           })
         );
@@ -205,7 +208,7 @@ const BookCard = ({ book }: BookCardProps) => {
     // Get user profile
     const { data: profile } = await supabase
       .from("profiles")
-      .select("full_name")
+      .select("full_name, profile_photo_url, current_year")
       .eq("id", user.id)
       .maybeSingle();
 
@@ -221,7 +224,11 @@ const BookCard = ({ book }: BookCardProps) => {
         user_id: user.id,
         comment_text: newComment.trim(),
         created_at: new Date().toISOString(),
-        profiles: { full_name: profile?.full_name || 'Anonymous' }
+        profiles: { 
+          full_name: profile?.full_name || 'Anonymous',
+          profile_photo_url: profile?.profile_photo_url || '',
+          current_year: profile?.current_year || ''
+        }
       };
       
       mockComments[book.id] = [newCommentObj, ...bookComments];
@@ -383,16 +390,34 @@ const BookCard = ({ book }: BookCardProps) => {
             <div className="flex flex-col gap-3 max-h-[300px] overflow-y-auto">
               {comments.length > 0 ? (
                 comments.map((comment) => (
-                  <div key={comment.id} className="flex flex-col gap-1 p-3 bg-accent/50 rounded-lg">
-                    <div className="flex items-center justify-between">
-                      <span className="font-semibold text-sm text-foreground">
-                        {comment.profiles?.full_name || 'Anonymous'}
-                      </span>
-                      <span className="text-xs text-muted-foreground">
-                        {formatDistanceToNow(new Date(comment.created_at), { addSuffix: true })}
-                      </span>
+                  <div key={comment.id} className="flex gap-3 p-3 bg-accent/50 rounded-lg">
+                    <Avatar className="w-10 h-10 flex-shrink-0">
+                      <AvatarImage 
+                        src={comment.profiles?.profile_photo_url} 
+                        alt={comment.profiles?.full_name || 'Anonymous'} 
+                      />
+                      <AvatarFallback>
+                        {(comment.profiles?.full_name || 'A').charAt(0).toUpperCase()}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="flex-1 flex flex-col gap-1">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <span className="font-semibold text-sm text-foreground">
+                            {comment.profiles?.full_name || 'Anonymous'}
+                          </span>
+                          {comment.profiles?.current_year && (
+                            <span className="text-xs text-muted-foreground">
+                              • {comment.profiles.current_year}
+                            </span>
+                          )}
+                        </div>
+                        <span className="text-xs text-muted-foreground">
+                          {formatDistanceToNow(new Date(comment.created_at), { addSuffix: true })}
+                        </span>
+                      </div>
+                      <p className="text-sm text-foreground">{comment.comment_text}</p>
                     </div>
-                    <p className="text-sm text-foreground">{comment.comment_text}</p>
                   </div>
                 ))
               ) : (

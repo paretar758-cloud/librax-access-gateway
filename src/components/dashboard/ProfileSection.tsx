@@ -18,6 +18,7 @@ interface ProfileData {
   email: string;
   phone_number: string;
   profile_photo_url: string;
+  current_year: string;
 }
 
 const ProfileSection = ({ user }: ProfileSectionProps) => {
@@ -28,6 +29,7 @@ const ProfileSection = ({ user }: ProfileSectionProps) => {
     email: "",
     phone_number: "",
     profile_photo_url: "",
+    current_year: "",
   });
   const [editedProfile, setEditedProfile] = useState<ProfileData>(profile);
   const { toast } = useToast();
@@ -51,6 +53,7 @@ const ProfileSection = ({ user }: ProfileSectionProps) => {
         email: data.email || "",
         phone_number: data.phone_number || "",
         profile_photo_url: data.profile_photo_url || "",
+        current_year: data.current_year || "",
       };
 
       setProfile(profileData);
@@ -75,6 +78,7 @@ const ProfileSection = ({ user }: ProfileSectionProps) => {
           full_name: editedProfile.full_name,
           phone_number: editedProfile.phone_number,
           profile_photo_url: editedProfile.profile_photo_url,
+          current_year: editedProfile.current_year,
         })
         .eq("id", user.id);
 
@@ -225,6 +229,28 @@ const ProfileSection = ({ user }: ProfileSectionProps) => {
               ) : (
                 <p className="mt-1 text-lg">
                   {profile.phone_number || "Not provided"}
+                </p>
+              )}
+            </div>
+
+            <div>
+              <Label htmlFor="current_year">Current Year</Label>
+              {isEditing ? (
+                <Input
+                  id="current_year"
+                  placeholder="e.g., 2nd Year, 3rd Year"
+                  value={editedProfile.current_year}
+                  onChange={(e) =>
+                    setEditedProfile({
+                      ...editedProfile,
+                      current_year: e.target.value,
+                    })
+                  }
+                  className="mt-1"
+                />
+              ) : (
+                <p className="mt-1 text-lg">
+                  {profile.current_year || "Not provided"}
                 </p>
               )}
             </div>
