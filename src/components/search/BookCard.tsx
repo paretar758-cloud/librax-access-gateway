@@ -51,7 +51,21 @@ const BookCard = ({ book }: BookCardProps) => {
     const isValidUUID = uuidRegex.test(book.id);
     
     if (!isValidUUID) {
-      // Skip database calls for mock books with string IDs
+      // For mock books, use localStorage
+      const mockLikes = JSON.parse(localStorage.getItem('mockBookLikes') || '{}');
+      const mockComments = JSON.parse(localStorage.getItem('mockBookComments') || '{}');
+      
+      const bookLikes = mockLikes[book.id] || [];
+      const bookComments = mockComments[book.id] || [];
+      
+      setLikeCount(bookLikes.length);
+      setCommentCount(bookComments.length);
+      setComments(bookComments);
+      
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        setIsLiked(bookLikes.includes(user.id));
+      }
       return;
     }
 
@@ -121,17 +135,6 @@ const BookCard = ({ book }: BookCardProps) => {
   };
 
   const handleLike = async () => {
-    // Check if book ID is a valid UUID
-    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-    if (!uuidRegex.test(book.id)) {
-      toast({
-        title: "Feature unavailable",
-        description: "Likes are only available for library books",
-        variant: "destructive",
-      });
-      return;
-    }
-
     const { data: { user } } = await supabase.auth.getUser();
     
     if (!user) {
@@ -140,6 +143,27 @@ const BookCard = ({ book }: BookCardProps) => {
         description: "Please log in to like books",
         variant: "destructive",
       });
+      return;
+    }
+
+    // Check if book ID is a valid UUID
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    if (!uuidRegex.test(book.id)) {
+      // For mock books, use localStorage
+      const mockLikes = JSON.parse(localStorage.getItem('mockBookLikes') || '{}');
+      const bookLikes = mockLikes[book.id] || [];
+      
+      if (isLiked) {
+        mockLikes[book.id] = bookLikes.filter((id: string) => id !== user.id);
+        setIsLiked(false);
+        setLikeCount(prev => prev - 1);
+      } else {
+        mockLikes[book.id] = [...bookLikes, user.id];
+        setIsLiked(true);
+        setLikeCount(prev => prev + 1);
+      }
+      
+      localStorage.setItem('mockBookLikes', JSON.stringify(mockLikes));
       return;
     }
 
@@ -167,17 +191,6 @@ const BookCard = ({ book }: BookCardProps) => {
   const handleAddComment = async () => {
     if (!newComment.trim()) return;
 
-    // Check if book ID is a valid UUID
-    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-    if (!uuidRegex.test(book.id)) {
-      toast({
-        title: "Feature unavailable",
-        description: "Comments are only available for library books",
-        variant: "destructive",
-      });
-      return;
-    }
-
     const { data: { user } } = await supabase.auth.getUser();
     
     if (!user) {
@@ -185,6 +198,40 @@ const BookCard = ({ book }: BookCardProps) => {
         title: "Authentication required",
         description: "Please log in to comment",
         variant: "destructive",
+      });
+      return;
+    }
+
+    // Get user profile
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("full_name")
+      .eq("id", user.id)
+      .maybeSingle();
+
+    // Check if book ID is a valid UUID
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    if (!uuidRegex.test(book.id)) {
+      // For mock books, use localStorage
+      const mockComments = JSON.parse(localStorage.getItem('mockBookComments') || '{}');
+      const bookComments = mockComments[book.id] || [];
+      
+      const newCommentObj = {
+        id: Date.now().toString(),
+        user_id: user.id,
+        comment_text: newComment.trim(),
+        created_at: new Date().toISOString(),
+        profiles: { full_name: profile?.full_name || 'Anonymous' }
+      };
+      
+      mockComments[book.id] = [newCommentObj, ...bookComments];
+      localStorage.setItem('mockBookComments', JSON.stringify(mockComments));
+      
+      setNewComment("");
+      fetchLikesAndComments();
+      toast({
+        title: "Success",
+        description: "Comment added successfully",
       });
       return;
     }
